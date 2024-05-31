@@ -1,0 +1,21 @@
+/* Import Bootstrap */
+@import "bootstrap/scss/bootstrap";
+
+body.light {
+    background-color: white;
+    color: black;
+}
+
+/* Dark theme styles */
+body.dark {
+    background-color: black;
+    color: white;
+}
+
+.btn-info {
+    color: #ffffff !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
