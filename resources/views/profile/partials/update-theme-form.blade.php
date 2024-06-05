@@ -1,47 +1,18 @@
 <div class="card text-{{ session('color', 'white') }} bg-{{ session('theme', 'dark') }}">
     <div class="card-body">
         <h2 class="card-title">
-            {{ __('Update Password') }}
+            {{ __('Theme settings') }}
         </h2>
 
         <p>
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            {{ __('Choose a default theme. (You can always change this later)') }}
         </p>
 
-        <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+        <form id="theme-toggle-form" method="POST" action="/toggle-theme">
             @csrf
-            @method('put')
-
-            <div>
-                <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-                <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-                <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
-            </div>
-
-            <div>
-                <x-input-label for="update_password_password" :value="__('New Password')" />
-                <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-                <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-            </div>
-
-            <div>
-                <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-                <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-                <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-            </div>
-
-            <div class="flex items-center gap-4">
-                <x-success-button>{{ __('Save') }}</x-success-button>
-
-                @if (session('status') === 'password-updated')
-                    <p
-                        x-data="{ show: true }"
-                        x-show="show"
-                        x-transition
-                        x-init="setTimeout(() => show = false, 2000)"
-                        class="text-sm text-gray-600 dark:text-gray-400"
-                    >{{ __('Saved.') }}</p>
-                @endif
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="theme-toggle" {{ session('theme', 'dark') === 'dark' ? 'checked="checked"' : '' }}">
+                <label class="form-check-label" for="themeToggleSwitch">{{ ucfirst(session('theme', 'dark')) }} mode</label>
             </div>
         </form>
     </div>

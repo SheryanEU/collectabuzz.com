@@ -11,15 +11,6 @@
             <hr class="dropdown-divider">
         </li>
         <li>
-            <form class="ms-3" id="theme-toggle-form" method="POST" action="/toggle-theme">
-                @csrf
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="theme-toggle" {{ session('theme', 'dark') === 'dark' ? 'checked="checked"' : '' }}">
-                    <label class="form-check-label" for="themeToggleSwitch">{{ session('theme', 'dark') }} Mode</label>
-                </div>
-            </form>
-        </li>
-        <li>
             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                 @csrf
                 <button type="submit" class="dropdown-item cursor-pointer">{{ __('Log Out') }}</button>

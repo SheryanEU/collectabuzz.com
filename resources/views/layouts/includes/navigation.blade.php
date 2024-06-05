@@ -28,6 +28,16 @@
                                 {{ __('Dashboard') }}
                             </x-nav-link>
                         </li>
+                        <li class="nav-item">
+                            <x-nav-link :href="route('pokedex')" :class="Route::is('dashboard') ? 'active' : ''">
+                                {{ __('Pokedex') }}
+                            </x-nav-link>
+                        </li>
+                        <li class="nav-item">
+                            <x-nav-link :href="route('dashboard')" :class="Route::is('dashboard') ? 'active' : ''">
+                                {{ __('Sets') }}
+                            </x-nav-link>
+                        </li>
                         @include('layouts.includes.parts.user-menu')
                     @endauth
                 </ul>
