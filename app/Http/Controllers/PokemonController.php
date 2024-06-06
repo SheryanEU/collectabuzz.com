@@ -14,7 +14,7 @@ class PokemonController extends Controller
 {
     public function browse(): View
     {
-        $pokemons = Pokemon::all();
+        $pokemons = Pokemon::all()->groupBy('generation');
 
         return view('pokedex.browse', compact('pokemons'));
     }

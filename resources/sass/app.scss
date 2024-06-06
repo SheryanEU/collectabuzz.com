@@ -23,3 +23,98 @@ body.dark {
 .neutralize {
     background-color: rgba(125, 125, 125, 0.5);
 }
+
+$type-colors: (
+    bug: darkgreen,
+    dark: #343a40,
+    dragon: royalblue,
+    electric: orange,
+    fairy: hotpink,
+    fighting: darkred,
+    fire: red,
+    flying: deepskyblue,
+    ghost: purple,
+    grass: forestgreen,
+    ground: saddlebrown,
+    ice: turquoise,
+    normal: darkgrey,
+    poison: mediumpurple,
+    psychic: rebeccapurple,
+    rock: sandybrown,
+    steel: dimgrey,
+    water: #0b5ed7
+);
+
+.type-badge {
+    border-radius: .375rem;
+    box-sizing: border-box;
+    color: white;
+    display: inline-block;
+    font-size: .65rem;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: unset;
+    padding: .2rem;
+    width: 70px;
+
+    @each $type, $color in $type-colors {
+        &.type-#{$type} {
+            background-color: $color;
+
+            .dark & {
+                box-shadow:
+                    inset 0 0 0 1px lighten($color, 50%),
+                    3px 3px 7px rgba(255,255,255,0.25)
+                ;
+            }
+
+            .light & {
+                box-shadow:
+                    inset 0 0 0 1px lighten($color, 50%),
+                    3px 3px 7px rgba(0,0,0,0.25)
+                ;
+            }
+        }
+    }
+}
+
+$status-colors: (
+    sub-legendary: darkgreen,
+    legendary: red,
+    mythical: green,
+);
+
+.status-badge {
+    border-radius: .375rem;
+    box-sizing: border-box;
+    color: white;
+    display: inline-block;
+    font-size: .65rem;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: unset;
+    padding: .2rem;
+    position: absolute;
+    width: 100px;
+    word-break: keep-all;
+
+    @each $status, $color in $status-colors {
+        &.status-#{$status} {
+            background-color: $color;
+
+            .dark & {
+                box-shadow:
+                    inset 0 0 0 1px lighten($color, 50%),
+                    3px 3px 7px rgba(255,255,255,0.25)
+            ;
+            }
+
+            .light & {
+                box-shadow:
+                    inset 0 0 0 1px lighten($color, 50%),
+                    3px 3px 7px rgba(0,0,0,0.25)
+            ;
+            }
+        }
+    }
+}

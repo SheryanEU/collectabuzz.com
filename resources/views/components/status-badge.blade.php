@@ -1,20 +1,18 @@
 @props(['status'])
 
+@php $class = null; @endphp
+
 @switch($status)
     @case('sub legendary')
-        @php $class = 'text-bg-success'; @endphp
-        @break
-
-    @case('legendary')
-        @php $class = 'text-bg-danger'; @endphp
-        @break
-
-    @case('mythical')
-        @php $class = 'text-bg-warning'; @endphp
+        @php $class = 'sub-legendary'; @endphp
         @break
 
     @default
-        @php $class = 'text-bg-primary'; @endphp
+        @if($status !== 'normal')
+            @php $class = $status @endphp
+        @endif
 @endswitch
 
-<span class="badge {{ $class }}">{{ ucfirst($status) }}</span>
+@if ($class)
+    <span class="status-badge status-{{ $class }}">{{ ucfirst($status) }}</span>
+@endif

@@ -19,10 +19,8 @@
         @include('layouts.includes.navigation')
 
         <!-- Page Content -->
-        <main class="container-fluid mt-5 px-0 py-4 px-3">
-            <div class="container">
-                {{ $slot }}
-            </div>
+        <main class="container-fluid mt-5 px-0 py-4">
+            {{ $slot }}
         </main>
     </div>
 
