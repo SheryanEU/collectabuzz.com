@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Pokemon;
+use App\Services\PokemonTcgApiService as PokemonApi;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,12 @@ use Illuminate\Contracts\View\View;
 
 class PokemonController extends Controller
 {
+    private PokemonApi $pokemonService;
+
+    public function __construct() {
+        $this->pokemonService = new PokemonApi('56b25750-0602-48aa-886f-241fb6d24d13');
+    }
+
     public function browse(): View
     {
         $pokemons = Pokemon::all()->groupBy('generation');
@@ -19,50 +26,21 @@ class PokemonController extends Controller
         return view('pokedex.browse', compact('pokemons'));
     }
 
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function api()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        try {
+//            $sets = $this->pokemonService->getSet()->all();
+//            $sets = $this->pokemonService->getCard()->all();
+//            $sets = $this->pokemonService->getCard()->find('3/165');
+            $name = "ivysaur";
+            $set = 'sv3pt5';
+            $query = [
+                'q' => 'name:' . $name . ' set.id:' . $set
+            ];
+            $sets = $this->pokemonService->getCard()->search($query);
+            dd($sets);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
     }
 }

@@ -24,6 +24,7 @@ Route::post('/toggle-theme', function () {
 Route::middleware('auth')->group(function () {
     // Pokemon
     Route::get('/pokedex', [PokemonController::class, 'browse'])->name('pokedex');
+    Route::get('/api', [PokemonController::class, 'api'])->name('api');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
