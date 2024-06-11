@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Dto\Set as SetDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Set extends Model
+class Card extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -26,31 +25,28 @@ class Set extends Model
      * @var array
      */
     protected $fillable = [
-        'serie_id',
         'set_id',
+        'card_id',
         'name',
-        'slug',
-        'set_code',
-        'set_number',
-        'set_total',
-        'set_master_total',
-        'logo_src',
-        'symbol_src',
-        'release_date',
+        'variant',
+        'supertype',
+        'subtypes',
+        'hp',
+        'types',
+        'attacks',
+        'weaknesses',
+        'rarity',
+        'artist',
+        'image',
     ];
 
-    public function getRouteKeyName(): string
+    public function set(): BelongsTo
     {
-        return 'slug';
+        return $this->belongsTo(Set::class, 'set_id', 'id');
     }
 
-    public function serie(): BelongsTo
+    public function toDto(): CardDto
     {
-        return $this->belongsTo(Serie::class, 'serie_id', 'id');
-    }
-
-    public function toDto(): SetDto
-    {
-        return SetDto::fromModel($this);
+        return CardDto::fromModel($this);
     }
 }

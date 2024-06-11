@@ -25,7 +25,7 @@ class FetchTcgSeriesAndSets extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Seed all Pokémon TCG series and sets.';
 
     private PokemonApi $pokemonService;
 
@@ -72,9 +72,6 @@ class FetchTcgSeriesAndSets extends Command
                     ->where('slug', $serie->slug)
                     ->firstOrFail();
 
-                if ($serieModel->wasRecentlyCreated) {
-                    $this->info('Serie was recently created: ' . $serie->slug);
-                }
                 $this->info('Handle serie: ' . $serie->slug);
 
                 $set = $this->setService->create(

@@ -39,7 +39,11 @@
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
-                            <x-nav-link :href="route('set')" :class="Route::is('set') || Route::is('serie.read') ? 'active' : ''">
+                            <x-nav-link :href="route('set')" :class="
+                                Route::is('set') ||
+                                Route::is('serie.set')
+                                ? 'active'
+                                : ''">
                                 {{ __('Set') }}
                             </x-nav-link>
                         </li>

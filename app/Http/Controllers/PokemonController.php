@@ -31,16 +31,17 @@ class PokemonController extends Controller
     public function api()
     {
         try {
-            $sets = $this->pokemonService->getSet()->all();
-            $cards = $this->pokemonService->getCard()->all();
-            $find = $this->pokemonService->getCard()->find('sv3pt5-2');
+            //$sets = $this->pokemonService->getSet()->all();
+            //$cards = $this->pokemonService->getCard()->all();
+            $find = $this->pokemonService->getSet()->find('sv6');
+            $card = $this->pokemonService->getCard()->find('base1-1');
             $name = "ivysaur";
             $set = 'sv3pt5';
             $query = [
                 'q' => 'name:' . $name . ' set.id:' . $set
             ];
             $search = $this->pokemonService->getCard()->search($query);
-            dd($find, $search, $sets, $cards);
+            dd($find, $search, $card);
         } catch (\Exception $e) {
 //            dd($e->getMessage());
 //            dd($e->getMessage());

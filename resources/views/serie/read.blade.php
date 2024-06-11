@@ -4,10 +4,10 @@
         <div class="row">
             @foreach($serie->sets as $set)
                 <a
-                    class="col-12 d-flex align-items-stretch mb-4"
+                    class="col-sm-12 col-md-6 col-xl-4 d-flex align-items-stretch mb-4"
                     href="{{ route('serie.set.read', [$serie->slug, $set->slug]) }}">
                     @include('set.parts.set-card', ['set' => $set])
-                </div>
+                </a>
             @endforeach
         </div>
     </div>
