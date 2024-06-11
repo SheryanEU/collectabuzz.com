@@ -29,13 +29,18 @@
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
-                            <x-nav-link :href="route('pokedex')" :class="Route::is('dashboard') ? 'active' : ''">
+                            <x-nav-link :href="route('pokedex')" :class="Route::is('pokedex') ? 'active' : ''">
                                 {{ __('Pokedex') }}
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
-                            <x-nav-link :href="route('dashboard')" :class="Route::is('dashboard') ? 'active' : ''">
-                                {{ __('Sets') }}
+                            <x-nav-link :href="route('serie')" :class="Route::is('serie') ? 'active' : ''">
+                                {{ __('Serie') }}
+                            </x-nav-link>
+                        </li>
+                        <li class="nav-item">
+                            <x-nav-link :href="route('set')" :class="Route::is('set') || Route::is('serie.read') ? 'active' : ''">
+                                {{ __('Set') }}
                             </x-nav-link>
                         </li>
                         @include('layouts.includes.parts.user-menu')
@@ -51,12 +56,3 @@
         </div>
     </div>
 </nav>
-
-@section('scripts')
-    <script>
-        document.getElementById('theme-toggle').addEventListener('click', function () {
-            fetch('/toggle-theme', {method: 'POST', headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
-                .then(() => location.reload());
-        });
-    </script>
-@endsection

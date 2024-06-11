@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\PokemonTcgApi;
 
-use Illuminate\Support\Facades\Http;
 class PokemonTcgApiService
 {
     const API_URL = 'https://api.pokemontcg.io/v2/';

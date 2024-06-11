@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Pokemon;
-use App\Services\PokemonTcgApiService as PokemonApi;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use App\Services\PokemonTcgApi\PokemonTcgApiService as PokemonApi;
 use Illuminate\Contracts\View\View;
 
 class PokemonController extends Controller
@@ -21,7 +16,14 @@ class PokemonController extends Controller
 
     public function browse(): View
     {
-        $pokemons = Pokemon::all()->groupBy('generation');
+        $pokemons = Pokemon::select(
+            'number',
+            'name',
+            'generation',
+            'status',
+            'primary_type',
+            'secondary_type'
+        )->get()->groupBy('generation');
 
         return view('pokedex.browse', compact('pokemons'));
     }
@@ -29,18 +31,19 @@ class PokemonController extends Controller
     public function api()
     {
         try {
-//            $sets = $this->pokemonService->getSet()->all();
-//            $sets = $this->pokemonService->getCard()->all();
-//            $sets = $this->pokemonService->getCard()->find('3/165');
+            $sets = $this->pokemonService->getSet()->all();
+            $cards = $this->pokemonService->getCard()->all();
+            $find = $this->pokemonService->getCard()->find('sv3pt5-2');
             $name = "ivysaur";
             $set = 'sv3pt5';
             $query = [
                 'q' => 'name:' . $name . ' set.id:' . $set
             ];
-            $sets = $this->pokemonService->getCard()->search($query);
-            dd($sets);
+            $search = $this->pokemonService->getCard()->search($query);
+            dd($find, $search, $sets, $cards);
         } catch (\Exception $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
+//            dd($e->getMessage());
         }
     }
 }

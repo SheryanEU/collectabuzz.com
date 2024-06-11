@@ -16,9 +16,10 @@ return new class extends Migration
 
             $table->unsignedBigInteger('serie_id');
 
+            $table->string('set_id');
             $table->string('name');
             $table->string('slug');
-            $table->string('set_code');
+            $table->string('set_code')->nullable();
             $table->string('set_number');
             $table->string('set_total');
             $table->string('set_master_total')->nullable();

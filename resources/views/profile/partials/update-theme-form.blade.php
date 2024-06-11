@@ -17,3 +17,12 @@
         </form>
     </div>
 </div>
+
+@section('scripts')
+    <script>
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            fetch('/toggle-theme', {method: 'POST', headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
+                .then(() => location.reload());
+        });
+    </script>
+@endsection
