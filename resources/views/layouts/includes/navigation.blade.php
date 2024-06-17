@@ -34,17 +34,22 @@
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
-                            <x-nav-link :href="route('serie')" :class="Route::is('serie') ? 'active' : ''">
+                            <x-nav-link rel="preload" :href="route('serie')" :class="Route::is('serie') ? 'active' : ''">
                                 {{ __('Serie') }}
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
-                            <x-nav-link :href="route('set')" :class="
+                            <x-nav-link rel="preload" :href="route('set')" :class="
                                 Route::is('set') ||
                                 Route::is('serie.set')
                                 ? 'active'
                                 : ''">
                                 {{ __('Set') }}
+                            </x-nav-link>
+                        </li>
+                        <li class="nav-item">
+                            <x-nav-link rel="preload" :href="route('card')" :class="Route::is('card') ? 'active' : ''">
+                                {{ __('Cards') }}
                             </x-nav-link>
                         </li>
                         @include('layouts.includes.parts.user-menu')

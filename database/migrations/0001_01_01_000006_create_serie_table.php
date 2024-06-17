@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('serie', function (Blueprint $table) {
             $table->id();
-            $table->string('serie_id');
+            $table->string('serie_id')->unique();
             $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();

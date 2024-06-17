@@ -10,7 +10,8 @@ class SetController extends Controller
 {
     public function browse(): View
     {
-        $sets = Set::with('serie')
+        $sets = Set::select('id', 'name', 'slug', 'logo_src', 'release_date', 'serie_id')
+            ->with('serie:id,name')
             ->orderBy('release_date', 'desc')
             ->get()
             ->groupBy(function ($item) {

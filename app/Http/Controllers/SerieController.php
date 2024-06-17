@@ -9,7 +9,7 @@ class SerieController extends Controller
 {
     public function browse(): View
     {
-        $series = Serie::orderBy('id', 'desc')->get();
+        $series = Serie::select(['id', 'name', 'slug', 'logo_src'])->orderBy('id', 'desc')->get();
 
         return view('serie.browse', compact('series'));
     }

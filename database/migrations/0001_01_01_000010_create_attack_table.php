@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('attack', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->json('cost')->nullable();
+            $table->string('name')->unique();
             $table->integer('converted_energy_cost')->nullable();
             $table->string('damage')->nullable();
-            $table->text('text')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

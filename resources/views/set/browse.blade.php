@@ -5,6 +5,7 @@
             <div class="row">
                 @foreach($setGroup as $set)
                     <a
+                        rel="preload"
                         class="col-sm-12 col-md-6 col-xl-4 d-flex align-items-stretch mb-4"
                         href="{{ route('set.read', [$set->slug]) }}">
                             @include('set.parts.set-card', ['set' => $set])

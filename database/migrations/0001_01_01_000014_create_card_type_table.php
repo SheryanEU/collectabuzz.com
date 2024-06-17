@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('weakness', function (Blueprint $table) {
-            $table->id();
-            $table->string('type');
-            $table->string('value');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create('card_type', function (Blueprint $table) {
+            $table->foreignId('card_id')->constrained('card')->onDelete('cascade');
+            $table->foreignId('type_id')->constrained('type')->onDelete('cascade');
+
+            $table->index('card_id');
+            $table->index('type_id');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('weakness');
+        Schema::dropIfExists('card_type');
     }
 };

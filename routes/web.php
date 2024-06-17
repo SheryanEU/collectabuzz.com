@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\PokemonController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SerieController;
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/set', [SetController::class, 'browse'])->name('set');
     Route::get('/set/{set:slug}', [SetController::class, 'read'])->name('set.read');
+
+    Route::get('/card', [CardController::class, 'browse'])->name('card');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

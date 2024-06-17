@@ -2,7 +2,8 @@
     <div class="card-body d-flex flex-column">
         <figure class="figure">
             @if($set->logo_src)
-                <img src="{{ asset($set->logo_src) }}"
+                <img loading="lazy"
+                     src="{{ asset($set->logo_src) }}"
                      class="figure-img img-fluid fixed-image-size mx-auto d-block p-3 beautiful-image"
                      alt="Image of: {{ $set->name }}">
             @endif

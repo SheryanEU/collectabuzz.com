@@ -1045,7 +1045,7 @@ class PokemonSeeder extends Seeder
         ];
 
         foreach ($pokemons as $pokemon) {
-
+            echo "Importing pokemon: " . str_pad($pokemon['val1'], 4, '0', STR_PAD_LEFT) . " {$pokemon['val2']} from generation {$pokemon['val3']} \n";
             Pokemon::firstOrCreate([
                 'number' => $pokemon['val1'],
                 'name' => $pokemon['val2'],

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Dto\Pokemon as PokemonDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pokemon extends Model
@@ -42,4 +44,14 @@ class Pokemon extends Model
         'sp_attack',
         'sp_defense',
     ];
+
+    public function toDto(): PokemonDto
+    {
+        return PokemonDto::fromModel($this);
+    }
+
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
 }

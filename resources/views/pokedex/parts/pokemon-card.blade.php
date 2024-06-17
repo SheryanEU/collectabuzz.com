@@ -1,7 +1,10 @@
 <div class="card text-{{ session('color', 'white') }} bg-{{ session('theme', 'dark') }}">
     <div class="card-header">
         <x-status-badge :status="$pokemon->status" />
-        <img src="{{ asset('storage/pokemon/placeholder.png') }}" alt="Image of: {{ $pokemon->name }}" class="img-fluid rounded-circle mx-auto d-block p-3 beautiful-image">
+        <img loading="lazy"
+             src="{{ asset('storage/pokemon/placeholder.png') }}"
+             alt="Image of: {{ $pokemon->name }}"
+             class="img-fluid rounded-circle mx-auto d-block p-3 beautiful-image">
     </div>
     <div class="card-body">
         <small class="text-sm font-monospace fst-italic">#{{ str_pad($pokemon->number, 4, '0', STR_PAD_LEFT) }}</small>

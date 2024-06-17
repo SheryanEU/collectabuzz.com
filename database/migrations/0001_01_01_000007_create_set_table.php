@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('serie_id');
 
-            $table->string('set_id');
+            $table->string('set_id')->unique();
             $table->string('name');
             $table->string('slug');
             $table->string('set_code')->nullable();

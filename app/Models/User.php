@@ -17,7 +17,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'slug',
         'email',
         'password',
@@ -44,5 +46,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        $middleName = $this->middle_name ? $this->middle_name . ' ' : '';
+        return "{$this->first_name} {$middleName}{$this->last_name}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomLastNameAttribute(): string
+    {
+        $middleName = $this->middle_name ? $this->middle_name . ' ' : '';
+        return "{$middleName}{$this->last_name}";
     }
 }
