@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use App\Models\Card as CardModel;
-use App\Models\Set as SetModel;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 final class Card
@@ -20,13 +15,15 @@ final class Card
     public function __construct(
         public Set         $set,
         public string      $cardId,
-        public Pokemon     $pokemon,
+        public ?int        $pokemonId,
+        public string      $name,
         public string      $variant,
         public string      $supertype,
         public ?string     $hp,
         public ?string     $rarity,
         public ?string     $artist,
-        public ?array     $image,
+        public ?string     $thumbnail,
+        public ?string     $image,
         /** @var Type[] $types */
         public array $types,
         /** @var Subtype[] $subtypes */
@@ -68,14 +65,14 @@ final class Card
                 $card->set
             ),
             $card->card_id,
-            Pokemon::fromModel(
-                $card->pokemon
-            ),
+            $card->pokemon_id,
+            $card->name,
             $card->variant,
             $card->supertype,
             $card->hp,
             $card->rarity,
             $card->artist,
+            $card->thumbnail,
             $card->image,
             $card->types->map(fn($type) => Type::fromModel($type))->toArray(),
             $card->subtypes->map(fn($subtype) => Subtype::fromModel($subtype))->toArray(),
@@ -88,13 +85,15 @@ final class Card
     {
         return [
             'set' => $this->set->toArray(),
-            'cardId' => $this->cardId,
-            'pokemon' => $this->pokemon->toArray(),
+            'card_id' => $this->cardId,
+            'pokemon_id' => $this->pokemonId,
+            'name' => $this->name,
             'variant' => $this->variant,
             'supertype' => $this->supertype,
             'hp' => $this->hp,
             'rarity' => $this->rarity,
             'artist' => $this->artist,
+            'thumbnail' => $this->thumbnail,
             'image' => $this->image,
             'types' => array_map(fn($type) => $type->toArray(), $this->types),
             'subtypes' => array_map(fn($subtype) => $subtype->toArray(), $this->subtypes),

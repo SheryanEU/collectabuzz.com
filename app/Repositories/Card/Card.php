@@ -19,19 +19,23 @@ final readonly class Card implements ICard
     public function create(CardDto $card): CardDto
     {
         $set = Set::where('set_id', $card->set->setId)->firstOrFail();
-        $pokemon = Pokemon::where('number', $card->pokemon->number)->firstOrFail();
+        if ($card->pokemonId) {
+            $number = Pokemon::where('number', $card->pokemonId)->firstOrFail();
+        }
 
         $cardModel = CardModel::firstOrCreate([
             'set_id' => $set->id,
             'card_id' => $card->cardId,
-            'pokemon_id' => $pokemon->id,
+            'name' => $card->name,
             'variant' => $card->variant,
         ],
         [
+            'pokemon_id' => $number->id ?? null,
             'supertype' => $card->supertype,
             'hp' => $card->hp,
             'rarity' => $card->rarity,
             'artist' => $card->artist,
+            'thumbnail' => $card->thumbnail,
             'image' => $card->image
         ]);
 
@@ -54,16 +58,15 @@ final readonly class Card implements ICard
             $attackModel = Attack::where('name', $attackDto->name)
                 ->where('converted_energy_cost', $attackDto->convertedEnergyCost)
                 ->where('damage', $attackDto->damage)
-                ->where('description', $attackDto->text)
                 ->firstOrFail();
 
             return [
                 'attack_id' => $attackModel->id,
-                'cost' => json_encode($attackDto->types) // Assuming types represent cost elements
+                'cost' => $attackDto->convertedEnergyCost,
             ];
         }, $cardDto->attacks);
 
-        $weaknessData = array_map(function($weaknessDto) {
+        $weaknessData = array_map(function ($weaknessDto) {
             $typeId = Type::where('name', $weaknessDto->type->name)->firstOrFail()->id;
             return [
                 'type_id' => $typeId,

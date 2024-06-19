@@ -1,4 +1,9 @@
-<div class="card text-{{ session('color', 'white') }} bg-{{ session('theme', 'dark') }} w-100">
+<div
+    class="card text-{{ session('color', 'white') }} bg-{{ session('theme', 'dark') }} w-100"
+    @if($serie->hexadecimalcolor)
+        style="background-color: #{{ $serie->hexadecimalcolor }} !important"
+    @endif
+>
     <div class="card-body d-flex flex-column">
         <figure class="figure">
             @if($serie->logo_src)

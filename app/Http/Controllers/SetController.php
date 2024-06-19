@@ -21,11 +21,9 @@ class SetController extends Controller
         return view('set.browse', compact('sets'));
     }
 
-    public function read(SerieModel $serie = null, Set $set): View
+    public function read(SerieModel $serie, Set $set): View
     {
-        if ($serie) {
-            $set->load('serie');
-        }
+        $set->load(['serie', 'cards']);
 
         return view('set.read', compact('set'));
     }

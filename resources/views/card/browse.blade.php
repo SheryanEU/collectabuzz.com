@@ -1,13 +1,17 @@
 <x-app-layout>
     <div class="container">
-        @foreach($cards as $card)
-            <img loading="lazy"
-                 src="{{ asset($card->image) }}"
-                 class="figure-img img-fluid fixed-image-size mx-auto d-block p-3 beautiful-image"
-                 alt="Image of: {{ $card->pokemon->name }}">
-            <small>{{ $card->pokemon->number }}</small> <em>{{ $card->rarity }}</em>
-            <h5>{{ $card->pokemon->name }}</h5>
-            <code>{!! $card->card_id !!}</code>
-        @endforeach
+        <div class="row">
+            @foreach($cardsGroupedBySeriesAndSets as $serieName => $serie)
+                <h2>{{ $serieName }}</h2>
+                @foreach($serie as $setName => $set)
+                    <h3 class="h4">{{ $setName }} ({{ $set->count() }})</h3>
+                    @foreach($set as $card)
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 p-2">
+                            @include('card.parts.card', ['card' => $card])
+                        </div>
+                    @endforeach
+                @endforeach
+            @endforeach
+        </div>
     </div>
 </x-app-layout>

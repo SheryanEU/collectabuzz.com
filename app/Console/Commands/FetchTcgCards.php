@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Dto\Attack;
 use App\Dto\Card;
+use App\Dto\Set;
 use App\Dto\Set as SetDto;
 use App\Dto\Subtype;
 use App\Dto\Type;
@@ -46,7 +47,7 @@ class FetchTcgCards extends Command
     {
         parent::__construct();
 
-        $this->pokemonService = new PokemonApi('56b25750-0602-48aa-886f-241fb6d24d13');
+        $this->pokemonService = new PokemonApi(config('pokemontcg.api_key'));
     }
 
     /**
@@ -55,8 +56,8 @@ class FetchTcgCards extends Command
     public function handle()
     {
         try {
-            $sets = SetModel::all();
-
+            //$sets = SetModel::orderBy('id', 'desc')->get();
+            $sets = SetModel::orderBy('id', 'desc')->skip(4)->take(1)->get();
             if ($sets->isEmpty()) {
                 $this->error('No sets found!');
                 $this->error('Aborting...');
@@ -94,37 +95,48 @@ class FetchTcgCards extends Command
         $variants = $this->getCardVariants($card);
         $this->info('Processing card: ' . $card['name']);
 
-        $pokemon = Pokemon::where('name', 'like', '%' . $card['name'] . '%')->firstOrFail()->toDto();
+        if (array_key_exists('nationalPokedexNumbers', $card)) {
+            $pokemon = Pokemon::where('number', $card['nationalPokedexNumbers'][0])->orWhere('name', 'like', '%' . $card['name'] . '%')->first();
+        } else {
+            $pokemon = Pokemon::where('name', 'like', '%' . $card['name'] . '%')->first();
+        }
 
-        $this->info('Related pokemon found: ' . $pokemon->name);
+        if ($card['supertype'] === 'Pokémon') {
+            if (!$pokemon) {
+                Log::error('Pokemon not found: ' . json_encode($card));
+                die();
+            }
+
+            $name = $pokemon->name;
+        } else {
+            $name = $card['name'];
+        }
+
+        $this->info('Related pokemon found: ' . $name);
 
         foreach ($variants as $variant => $details) {
-            $this->info('Processing card: ' . $pokemon->name . ' - ' . $variant);
+            $this->info('Processing card: ' . $name . ' - ' . $variant);
 
-            $types = array_map(fn($type) => new Type($type), $card['types']);
-            $subtypes = array_map(fn($subtype) => new Subtype($subtype), $card['subtypes']);
+            $types = array_map(fn($type) => new Type($type), $card['types'] ?? []);
+            $subtypes = array_map(fn($subtype) => new Subtype($subtype), $card['subtypes'] ?? []);
             $attacks = array_map(fn($attack) => new Attack(
                 $attack['name'],
                 $attack['convertedEnergyCost'],
                 $attack['damage'],
                 $attack['text'],
                 array_map(fn($cost) => new Type($cost), $attack['cost'])
-            ), $card['attacks']);
+            ), $card['attacks'] ?? []);
+
             $weaknesses = array_map(fn($weakness) => new Weakness(
                 new Type($weakness['type']),
-                (int) ltrim($weakness['value'], '×'),
-            ), $card['weaknesses']);
+                (int)ltrim($weakness['value'], '×'),
+            ), $card['weaknesses'] ?? []);
 
-            $cardDto = new Card(
+            $cardDto = $this->generateCardDto(
+                $card,
+                $pokemon ?? null,
+                $name,
                 $setDto,
-                $card['id'],
-                $pokemon,
-                $details['variant'],
-                $card['supertype'],
-                $card['hp'],
-                $card['rarity'],
-                $card['artist'],
-                $card['images'],
                 $types,
                 $subtypes,
                 $attacks,
@@ -132,7 +144,7 @@ class FetchTcgCards extends Command
             );
 
             $created = $this->cardService->create($cardDto);
-            $this->info('Processed card: ' . $created->pokemon->name . ' - ' . $created->variant);
+            $this->info('Processed card: ' . $created->name . ' - ' . $created->variant);
         }
     }
 
@@ -166,5 +178,49 @@ class FetchTcgCards extends Command
         }
 
         return $image;
+    }
+
+    /**
+     * @param array $card
+     * @param Pokemon|null $pokemon
+     * @param string $name
+     * @param SetDto $set
+     * @param Type[] $types
+     * @param Subtype[] $subtypes
+     * @param Attack[] $attacks
+     * @param Weakness[] $weaknesses
+     *
+     * @return Card
+     *
+     * @throws ValidationException
+     */
+    private function generateCardDto(
+        array $card,
+        ?Pokemon $pokemon,
+        string $name,
+        Set $set,
+        array $types,
+        array $subtypes,
+        array $attacks,
+        array $weaknesses
+    ): Card
+    {
+        return new Card(
+            $set,
+            $card['id'],
+            $pokemon->id ?? null,
+            $name,
+            $details['variant'],
+            $card['supertype'],
+            $card['hp'] ?? null,
+            $card['rarity'] ?? null,
+            $card['artist'] ?? null,
+            $card['images']['small'] ?? null,
+            $card['images']['large'] ?? null,
+            $types,
+            $subtypes,
+            $attacks,
+            $weaknesses
+        );
     }
 }

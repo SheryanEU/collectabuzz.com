@@ -31,13 +31,17 @@ class Card extends Model
     protected $fillable = [
         'set_id',
         'card_id',
-        'pokemon_id',
         'variant',
+        'pokemon_id',
+        'name',
         'supertype',
+        'subtype',
         'hp',
         'rarity',
         'artist',
-        'image'
+        'flavor_text',
+        'thumbnail',
+        'image',
     ];
 
     public function toDto(): CardDto

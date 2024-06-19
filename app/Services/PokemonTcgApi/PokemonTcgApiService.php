@@ -6,8 +6,6 @@ namespace App\Services\PokemonTcgApi;
 
 class PokemonTcgApiService
 {
-    const API_URL = 'https://api.pokemontcg.io/v2/';
-
     protected string $apiKey;
     protected array $options;
     protected array $cache;

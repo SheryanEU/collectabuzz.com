@@ -50,7 +50,7 @@ class Pokemon extends Model
         return PokemonDto::fromModel($this);
     }
 
-    public function cards(): HasMany
+    public function pokemonCards(): HasMany
     {
         return $this->hasMany(Card::class);
     }

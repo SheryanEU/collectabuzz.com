@@ -13,31 +13,24 @@ return new class extends Migration
     {
         Schema::create('card', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('set_id');
-
+            $table->foreignId('set_id')->constrained()->onDelete('cascade');
             $table->string('card_id');
-
-            $table->unsignedBigInteger('pokemon_id');
-
             $table->string('variant');
+            $table->foreignId('pokemon_id')->nullable()->constrained();
+            $table->string('name');
             $table->string('supertype');
+            $table->string('subtype');
             $table->string('hp')->nullable();
-
-            $table->string('rarity')->nullable();
+            $table->string('rarity');
             $table->string('artist')->nullable();
+            $table->text('flavor_text')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('image')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('set_id')->references('id')->on('set')->onDelete('cascade');
-            $table->foreign('pokemon_id')->references('id')->on('pokemon')->onDelete('cascade');
-
-            $table->unique(['card_id', 'variant', 'set_id']);
-
-            $table->index('set_id');
-            $table->index('pokemon_id');
+            $table->unique(['card_id', 'variant']);
         });
     }
 

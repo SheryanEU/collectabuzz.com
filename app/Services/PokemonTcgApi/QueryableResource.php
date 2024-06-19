@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Http;
 
 class QueryableResource
 {
+    protected string $apiUrl;
     protected $type;
     protected $options;
     protected $apiKey;
 
     public function __construct($type, $options, $apiKey)
     {
+        $this->apiUrl = config('pokemontcg.api_url');
         $this->type = $type;
         $this->options = $options;
         $this->apiKey = $apiKey;
@@ -21,21 +23,21 @@ class QueryableResource
 
     public function all()
     {
-        $url = PokemonTcgApiService::API_URL . $this->type;
+        $url = $this->apiUrl . $this->type;
         $response = Http::withHeaders($this->getHeaders())->get($url, $this->options);
         return $response->json();
     }
 
     public function find($id)
     {
-        $url = PokemonTcgApiService::API_URL . $this->type . '/' . $id;
+        $url = $this->apiUrl . $this->type . '/' . $id;
         $response = Http::withHeaders($this->getHeaders())->get($url);
         return $response->json();
     }
 
     public function search($query)
     {
-        $url = PokemonTcgApiService::API_URL . $this->type;
+        $url = $this->apiUrl . $this->type;
         $response = Http::withHeaders($this->getHeaders())->get($url, $query);
         return $response->json();
     }

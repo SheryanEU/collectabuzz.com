@@ -4,9 +4,9 @@
             @foreach($series as $serie)
                 <a
                     rel="preload"
-                    class="col-12 d-flex align-items-stretch mb-4"
-                    @if($serie->hexadecimalcolor) style="background-color: {{ $serie->hexadecimalcolor }}" @endif
-                    href="{{ route('serie.set', $serie->slug) }}">
+                    class="col-sm-12 col-md-6 col-lg-3 d-flex align-items-stretch mb-4"
+                    href="{{ route('serie.set', $serie->slug) }}"
+                    >
                         @include('serie.parts.serie-card', ['serie' => $serie])
                 </a>
           @endforeach

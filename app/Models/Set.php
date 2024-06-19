@@ -6,6 +6,7 @@ use App\Dto\Set as SetDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Set extends Model
@@ -47,6 +48,11 @@ class Set extends Model
     public function serie(): BelongsTo
     {
         return $this->belongsTo(Serie::class, 'serie_id', 'id');
+    }
+
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
     }
 
     public function toDto(): SetDto

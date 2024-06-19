@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="container">
         @foreach($sets as $serieName => $setGroup)
-            <h3 class="text-center mb-3">{{ $serieName }}</h3>
+            <h3 class="text-center mb-3">{{ $serieName }} ({{ $setGroup->count() }})</h3>
             <div class="row">
                 @foreach($setGroup as $set)
                     <a
